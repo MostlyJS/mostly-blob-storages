@@ -1,7 +1,7 @@
 {
-  "name": "mostly-multer-storages",
+  "name": "mostly-blob-storages",
   "version": "1.0.0",
-  "description": "Multer storage engines for mostly express api gateway",
+  "description": "Blob storage engines for mostly microservices and api gateway middleware",
   "author": "Forafish",
   "license": "MIT",
   "main": "index.js",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MostlyJS/mostly-multer-storages.git"
+    "url": "git+https://github.com/MostlyJS/mostly-blob-storages.git"
   },
   "dependencies": {
     "async": "^2.5.0",
