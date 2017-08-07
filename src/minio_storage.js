@@ -2,6 +2,7 @@ import async from 'async';
 import crypto from 'crypto';
 import stream from 'stream';
 import fileType from 'file-type';
+import concat from 'concat-stream';
 
 function staticValue (value) {
   return function (req, file, cb) {
@@ -45,7 +46,7 @@ function collect (storage, req, file, cb) {
         key: values[2],
         contentType: contentType,
         replacementStream: replacementStream,
-        size: replacementStream.bytesWritten
+        size: replacementStream && replacementStream.bytesWritten
       });
     });
   });
@@ -79,7 +80,7 @@ class MinioStorage {
 
     switch (typeof opts.contentType) {
       case 'function': this.getContentType = opts.contentType; break;
-      case 'undefined': this.getContentType = autoContentType; break;
+      case 'undefined': this.getContentType = staticValue('application/octet-stream'); break;
       default: throw new TypeError('Expected opts.contentType to be undefined or function');
     }
   }
@@ -89,15 +90,17 @@ class MinioStorage {
       if (err) return cb(err);
 
       let stream = opts.replacementStream || file.stream;
-      this.minio.putObject(opts.bucket, opts.key, stream, 0, function(err, etag) {
-        if (err) return cb(err);
-        cb(null, {
-          bucket: opts.bucket,
-          key: opts.key,
-          size: opts.size,
-          etag: etag
+      stream.pipe(concat(fileBuffer => {
+        this.minio.putObject(opts.bucket, opts.key, fileBuffer, function(err, etag) {
+          if (err) return cb(err);
+          cb(null, {
+            bucket: opts.bucket,
+            key: opts.key,
+            size: opts.size,
+            etag: etag
+          });
         });
-      });
+      }));
     });
   }
 

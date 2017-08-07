@@ -25,6 +25,7 @@
   "dependencies": {
     "async": "^2.5.0",
     "babel-polyfill": "^6.23.0",
+    "concat-stream": "^1.6.0",
     "debug": "^2.6.6",
     "file-type": "^5.2.0",
     "lodash": "^4.17.4",
