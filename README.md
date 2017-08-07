@@ -1,36 +1,23 @@
-MostlyJS Feathers Handler
-=========================
+MostlyJS Multer Storages
+========================
 
-[![Build Status](https://travis-ci.org/mostlyjs/mostly-feathers-rest.svg)](https://travis-ci.org/mostlyjs/mostly-feathers-rest)
+[![Build Status](https://travis-ci.org/mostlyjs/mostly-multer-storage.svg)](https://travis-ci.org/mostlyjs/mostly-multer-storage)
 
-This module provides an express middleware as a RESTful gateway to call microservice writing with [mostly-feathers](https://github.com/MostlyJS/mostly-feathers).
+This module provides multer storage engines for
+
+* Local storage
+* Minio storage
+* Qiniu storage (not yet)
+* S3 storage (not yet)
+* Swarm storage (not yet)
+* ISPF storage (not yet)
 
 # Usage
 
 ## Installation
 
 ```bash
-npm install mostly-feathers-rest
-```
-
-## Quick Example
-
-```javascript
-import express from 'express';
-import bodyParser from 'body-parser';
-import nats from 'nats';
-import mostly from 'mostly-node';
-import feathers from 'mostly-feathers-rest';
-
-const trans = new mostly(nats.connect()
-const app = express()
-  .use(bodyParser.json())
-  .use(bodyParser.urlencoded({ extended: true }));
-
-trans.ready(() => {
-  app.use(feathers(app, trans, '/api'));
-  app.listen(process.env.PORT || 3001);
-});
+npm install mostly-multer-storage
 ```
 
 # License
