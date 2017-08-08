@@ -14,7 +14,12 @@ This module provides multer storage engines for express api gateway
 
 With blob storages for mostly microservices based on the abstract-blob-storage.
 
-* minio-blob-storage
+* Local blob storage
+* Minio blob storage
+* Qiniu blob storage (not yet)
+* S3 blob storage (not yet)
+* Swarm blob storage (not yet)
+* ISPF blob storage (not yet)
 
 # Usage
 
