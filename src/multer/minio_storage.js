@@ -1,5 +1,4 @@
 import async from 'async';
-import stream from 'stream';
 import concat from 'concat-stream';
 import { getOption, defaultKey, defaultContentType, staticValue } from '../helpers';
 
@@ -28,12 +27,13 @@ function collect (storage, req, file, cb) {
 
 class MinioStorage {
   constructor(opts) {
-    this.minio = getOption(opts, 'minio', {
-      'object': opts.minio
+    this.minio = getOption(opts, 'client', {
+      'object': opts.client
     }, true);
 
-    this.region = getOption(opts, 'region', {
-      'string': opts.region,
+    this.getRegion = getOption(opts, 'region', {
+      'function': opts.region,
+      'string': staticValue(opts.region),
       'undefined': staticValue(process.env.MINIO_REGION || 'us-west-1')
     });
 
@@ -74,9 +74,7 @@ class MinioStorage {
   }
 
   _removeFile (req, file, cb) {
-    this.minio.removeObject(file.bucket, file.key, function(err) {
-      if (err) console.error('Unable to remove object', err);
-    });
+    this.minio.removeObject(file.bucket, file.key, cb);
   }
 }
 
