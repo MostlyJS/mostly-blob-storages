@@ -1,33 +1,7 @@
 import async from 'async';
-import crypto from 'crypto';
 import stream from 'stream';
-import fileType from 'file-type';
 import concat from 'concat-stream';
-
-function staticValue (value) {
-  return function (req, file, cb) {
-    cb(null, value);
-  };
-}
-
-function defaultKey (req, file, cb) {
-  crypto.pseudoRandomBytes(16, function (err, raw) {
-    cb(err, err ? undefined : raw.toString('hex'));
-  });
-}
-
-function autoContentType (req, file, cb) {
-  file.stream.once('data', function (firstChunk) {
-    var type = fileType(firstChunk);
-    var mime = (type === null ? 'application/octet-stream' : type.mime);
-    var outStream = new stream.PassThrough();
-
-    outStream.write(firstChunk);
-    file.stream.pipe(outStream);
-
-    cb(null, mime, outStream);
-  });
-}
+import helpers from '../helpers';
 
 function collect (storage, req, file, cb) {
   async.parallel([
@@ -37,7 +11,7 @@ function collect (storage, req, file, cb) {
   ], function (err, values) {
     if (err) return cb(err);
 
-    storage.getContentType(req, file, function (err, contentType, replacementStream) {
+    storage.getContentType(req, file, function (err, contentType, outStream) {
       if (err) return cb(err);
 
       cb.call(storage, null, {
@@ -45,8 +19,8 @@ function collect (storage, req, file, cb) {
         bucket: values[1],
         key: values[2],
         contentType: contentType,
-        replacementStream: replacementStream,
-        size: replacementStream && replacementStream.bytesWritten
+        stream: outStream,
+        size: outStream && outStream.bytesWritten
       });
     });
   });
@@ -54,48 +28,43 @@ function collect (storage, req, file, cb) {
 
 class MinioStorage {
   constructor(opts) {
-    switch (typeof opts.minio) {
-      case 'object': this.minio = opts.minio; break;
-      default: throw new TypeError('Expected opts.minio to be object');
-    }
-    
-    switch (typeof opts.region) {
-      case 'string': this.getRegion = opts.region; break;
-      case 'undefined': this.getRegion = staticValue(process.env.MINIO_REGION || 'us-west-1'); break;
-      default: throw new TypeError('Expected opts.contentType to be undefined or string');
-    }
+    this.minio = helpers.getOption(opts, 'minio', {
+      'object': opts.minio
+    }, true);
 
-    switch (typeof opts.bucket) {
-      case 'function': this.getBucket = opts.bucket; break;
-      case 'string': this.getBucket = staticValue(opts.bucket); break;
-      case 'undefined': throw new Error('bucket is required');
-      default: throw new TypeError('Expected opts.bucket to be string or function');
-    }
-    
-    switch (typeof opts.key) {
-      case 'function': this.getKey = opts.key; break;
-      case 'undefined': this.getKey = defaultKey; break;
-      default: throw new TypeError('Expected opts.key to be function');
-    }
+    this.region = helpers.getOption(opts, 'region', {
+      'string': opts.region,
+      'undefined': helpers.staticValue(process.env.MINIO_REGION || 'us-west-1')
+    });
 
-    switch (typeof opts.contentType) {
-      case 'function': this.getContentType = opts.contentType; break;
-      case 'undefined': this.getContentType = staticValue('application/octet-stream'); break;
-      default: throw new TypeError('Expected opts.contentType to be undefined or function');
-    }
+    this.getBucket = helpers.getOption(opts, 'bucket', {
+      'function': opts.bucket,
+      'string': helpers.staticValue(opts.bucket),
+    }, true);
+    
+    this.getKey = helpers.getOption(opts, 'key', {
+      'function': opts.key,
+      'undefined': helpers.defaultKey,
+    }, true);
+
+    this.getContentType = helpers.getOption(opts, 'contentType', {
+      'function': opts.contentType,
+      'undefined': helpers.defaultContentType,
+    }, true);
   }
 
   _handleFile(req, file, cb) {
     collect(this, req, file, (err, opts) => {
       if (err) return cb(err);
 
-      let stream = opts.replacementStream || file.stream;
+      let stream = opts.stream || file.stream;
       stream.pipe(concat(fileBuffer => {
         this.minio.putObject(opts.bucket, opts.key, fileBuffer, function(err, etag) {
           if (err) return cb(err);
           cb(null, {
             bucket: opts.bucket,
             key: opts.key,
+            contentType: opts.contentType,
             size: opts.size,
             etag: etag
           });
