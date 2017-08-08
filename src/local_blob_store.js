@@ -26,6 +26,10 @@ class LocalBlobStore {
     this.cache = LRU(opts.cache || 100);
   }
 
+  get name () {
+    return 'local';
+  }
+
   createReadStream (opts) {
     assert(opts.key, 'opts.key is not provided');
 

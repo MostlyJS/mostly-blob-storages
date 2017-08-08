@@ -17,6 +17,10 @@ class MinioBlobStore {
     this.s3 = opts.client;
   }
 
+  get name () {
+    return 'minio';
+  }
+
   createReadStream (opts) {
     if (typeof opts === 'string') opts = { key: opts };
     var config = { client: this.s3, params: this.downloadParams(opts) };

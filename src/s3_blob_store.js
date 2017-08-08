@@ -17,6 +17,10 @@ class S3BlobStore {
     this.s3 = opts.client;
   }
 
+  get name () {
+    return 's3';
+  }
+
   createReadStream (opts) {
     if (typeof opts === 'string') opts = { key: opts };
     var config = { client: this.s3, params: this.downloadParams(opts) };
