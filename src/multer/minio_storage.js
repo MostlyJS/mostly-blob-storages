@@ -1,7 +1,7 @@
 import async from 'async';
 import stream from 'stream';
 import concat from 'concat-stream';
-import helpers from '../helpers';
+import { getOption, defaultKey, defaultContentType, staticValue } from '../helpers';
 
 function collect (storage, req, file, cb) {
   async.parallel([
@@ -28,28 +28,28 @@ function collect (storage, req, file, cb) {
 
 class MinioStorage {
   constructor(opts) {
-    this.minio = helpers.getOption(opts, 'minio', {
+    this.minio = getOption(opts, 'minio', {
       'object': opts.minio
     }, true);
 
-    this.region = helpers.getOption(opts, 'region', {
+    this.region = getOption(opts, 'region', {
       'string': opts.region,
-      'undefined': helpers.staticValue(process.env.MINIO_REGION || 'us-west-1')
+      'undefined': staticValue(process.env.MINIO_REGION || 'us-west-1')
     });
 
-    this.getBucket = helpers.getOption(opts, 'bucket', {
+    this.getBucket = getOption(opts, 'bucket', {
       'function': opts.bucket,
-      'string': helpers.staticValue(opts.bucket),
+      'string': staticValue(opts.bucket),
     }, true);
     
-    this.getKey = helpers.getOption(opts, 'key', {
+    this.getKey = getOption(opts, 'key', {
       'function': opts.key,
-      'undefined': helpers.defaultKey,
+      'undefined': defaultKey,
     }, true);
 
-    this.getContentType = helpers.getOption(opts, 'contentType', {
+    this.getContentType = getOption(opts, 'contentType', {
       'function': opts.contentType,
-      'undefined': helpers.defaultContentType,
+      'undefined': defaultContentType,
     }, true);
   }
 

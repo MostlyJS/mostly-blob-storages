@@ -5,7 +5,7 @@ import mkdirp from 'mkdirp';
 import os from 'os';
 import path from 'path';
 import url from 'url';
-import helpers from '../helpers';
+import { getOption, defaultKey, defaultContentType, staticValue } from '../helpers';
 
 function collect (storage, req, file, cb) {
   async.parallel([
@@ -30,25 +30,30 @@ function collect (storage, req, file, cb) {
 
 class LocalStorage {
   constructor(opts) {
-    this.getBucket = helpers.getOption(opts, 'bucket', {
+    this.destination = getOption(opts, 'destination', {
+      'string': opts.destination,
+      'undefined': staticValue(os.tmpdir())
+    });
+
+    this.getBucket = getOption(opts, 'bucket', {
       'function': opts.bucket,
-      'string': helpers.staticValue(opts.bucket),
-      'undefined': helpers.staticValue(os.tmpdir()),
+      'string': staticValue(opts.bucket),
+      'undefined': staticValue(os.tmpdir()),
     }, true);
-    
-    if (typeof opts.bucket === 'string') {
-      mkdirp.sync(opts.bucket);
-    }
 
-    this.getKey = helpers.getOption(opts, 'key', {
+    this.getKey = getOption(opts, 'key', {
       'function': opts.key,
-      'undefined': helpers.defaultKey,
+      'undefined': defaultKey,
     }, true);
 
-    this.getContentType = helpers.getOption(opts, 'contentType', {
+    this.getContentType = getOption(opts, 'contentType', {
       'function': opts.contentType,
-      'undefined': helpers.defaultContentType,
+      'undefined': defaultContentType,
     }, true);
+
+    if (typeof opts.destination === 'string') {
+      mkdirp.sync(opts.destination);
+    }
   }
 
   _handleFile(req, file, cb) {
@@ -57,7 +62,7 @@ class LocalStorage {
 
       let stream = opts.stream || file.stream;
 
-      let finalPath = path.join(opts.bucket, opts.key);
+      let finalPath = path.join(this.destination, opts.key);
       var outStream = fs.createWriteStream(finalPath);
       var finalUrl = url.resolve(`${req.protocol}://${req.get('host')}`, `${opts.bucket}/${opts.key}`);
 
@@ -76,11 +81,10 @@ class LocalStorage {
   }
 
   _removeFile (req, file, cb) {
-    var path = file.path;
+    var path = path.join(this.destination, file.key);
 
-    delete file.destination;
-    delete file.filename;
-    delete file.path;
+    delete file.bucket;
+    delete file.key;
 
     fs.unlink(path, cb);
   }

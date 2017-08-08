@@ -5,12 +5,12 @@ import uploadStream from 's3-stream-upload';
 
 const debug = makeDebug('mostly:blob-storages:s3-blob-store');
 
-class S3BlobStore {
+class MinioBlobStore {
   constructor (opts) {
-    if (!(this instanceof S3BlobStore)) return new S3BlobStore(opts);
+    if (!(this instanceof MinioBlobStore)) return new MinioBlobStore(opts);
     opts = opts || {};
-    if (!opts.client) throw Error("S3BlobStore client option required (aws-sdk AWS.S3 instance)");
-    if (!opts.bucket) throw Error("S3BlobStore bucket option required");
+    if (!opts.client) throw Error("MinioBlobStore client option required (minio-js client instance)");
+    if (!opts.bucket) throw Error("MinioBlobStore bucket option required");
     this.accessKey = opts.accessKey;
     this.secretKey = opts.secretKey;
     this.bucket = opts.bucket;
@@ -88,5 +88,5 @@ class S3BlobStore {
 }
 
 module.exports = function (opts) {
-  return new S3BlobStore(opts);
+  return new MinioBlobStore(opts);
 };
