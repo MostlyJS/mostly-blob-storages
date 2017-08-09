@@ -50,7 +50,10 @@ class MinioBlobStore {
     });
 
     bufferStream.on('end', () => {
-      this.client.putObject(bucket, opts.key, bufferStream, cb);
+      this.client.putObject(bucket, opts.key, buffer, (err, etag) => {
+        if (err) return cb(err);
+        return cb(null, { etag: etag });
+      });
     });
 
     bufferStream.on('error', cb);
