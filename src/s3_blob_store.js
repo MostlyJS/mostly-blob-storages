@@ -91,6 +91,6 @@ class S3BlobStore {
   }
 }
 
-module.exports = function (opts) {
+export default function (opts) {
   return new S3BlobStore(opts);
-};
+}

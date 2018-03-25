@@ -81,6 +81,6 @@ class LocalBlobStore {
   }
 }
 
-module.exports = function (opts) {
+export default function (opts) {
   return new LocalBlobStore(opts);
-};
+}

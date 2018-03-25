@@ -90,6 +90,6 @@ class LocalStorage {
   }
 }
 
-module.exports = function (opts) {
+export default function (opts) {
   return new LocalStorage(opts);
-};
+}

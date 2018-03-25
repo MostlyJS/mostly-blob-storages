@@ -78,6 +78,6 @@ class MinioBlobStore {
   }
 }
 
-module.exports = function (opts) {
+export default function (opts) {
   return new MinioBlobStore(opts);
-};
+}
