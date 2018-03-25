@@ -6,11 +6,9 @@ import LRU from 'lru-cache';
 import mkdirp from 'mkdirp';
 import path from 'path';
 
-var noop = function() {};
-
-var listen = function(stream, opts, cb) {
+var listen = function (stream, opts, cb) {
   if (!cb) return stream;
-  endOf(stream, function(err) {
+  endOf(stream, function (err) {
     if (err) return cb(err);
     cb(null, opts);
   });
@@ -51,7 +49,7 @@ class LocalBlobStore {
 
       proxy.setReadable(false);
 
-      mkdirp(dir, function(err) {
+      mkdirp(dir, function (err) {
         if (proxy.destroyed) return;
         if (err) return proxy.destroy(err);
         cache.set(dir, true);
@@ -66,7 +64,7 @@ class LocalBlobStore {
     assert(opts.key, 'opts.key is not provided');
 
     var key = path.join(this.path, opts.key);
-    fs.stat(key, function(err, stat) {
+    fs.stat(key, function (err, stat) {
       if (err && err.code !== 'ENOENT') return cb(err);
       cb(null, !!stat);
     });
@@ -76,7 +74,7 @@ class LocalBlobStore {
     assert(opts.key, 'opts.key is not provided');
 
     var key = path.join(this.path, opts.key);
-    fs.unlink(key, function(err) {
+    fs.unlink(key, function (err) {
       if (err && err.code !== 'ENOENT') return cb(err);
       cb();
     });

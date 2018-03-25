@@ -26,7 +26,7 @@ class MinioBlobStore {
     assert(opts.key, 'opts.key is not provided');
     assert(opts.bucket, 'opts.bucket is not provided');
 
-    let passThrough = new stream.PassThrough()
+    let passThrough = new stream.PassThrough();
     this.client.getObject(bucket, opts.key, (err, dataStream) => {
       if (err) return passThrough.emit('error', err);
       dataStream.pipe(passThrough);
@@ -46,7 +46,7 @@ class MinioBlobStore {
     let buffer = new Buffer(0);
 
     bufferStream.on('data', (chunk) => {
-      buffer = Buffer.concat([buffer, chunk], buffer.length + chunk.length)
+      buffer = Buffer.concat([buffer, chunk], buffer.length + chunk.length);
     });
 
     bufferStream.on('end', () => {

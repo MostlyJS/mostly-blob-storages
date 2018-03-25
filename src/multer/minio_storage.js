@@ -26,7 +26,7 @@ function collect (storage, req, file, cb) {
 }
 
 class MinioStorage {
-  constructor(opts) {
+  constructor (opts) {
     this.minio = getOption(opts, 'client', {
       'object': opts.client
     }, true);
@@ -53,13 +53,13 @@ class MinioStorage {
     }, true);
   }
 
-  _handleFile(req, file, cb) {
+  _handleFile (req, file, cb) {
     collect(this, req, file, (err, opts) => {
       if (err) return cb(err);
 
       let stream = opts.stream || file.stream;
       stream.pipe(concat(fileBuffer => {
-        this.minio.putObject(opts.bucket, opts.key, fileBuffer, function(err, etag) {
+        this.minio.putObject(opts.bucket, opts.key, fileBuffer, function (err, etag) {
           if (err) return cb(err);
           cb(null, {
             bucket: opts.bucket,

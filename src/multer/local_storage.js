@@ -29,7 +29,7 @@ function collect (storage, req, file, cb) {
 }
 
 class LocalStorage {
-  constructor(opts) {
+  constructor (opts) {
     this.destination = getOption(opts, 'destination', {
       'string': opts.destination,
       'undefined': staticValue(os.tmpdir())
@@ -56,7 +56,7 @@ class LocalStorage {
     }
   }
 
-  _handleFile(req, file, cb) {
+  _handleFile (req, file, cb) {
     collect(this, req, file, (err, opts) => {
       if (err) return cb(err);
 

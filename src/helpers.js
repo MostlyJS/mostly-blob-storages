@@ -29,7 +29,7 @@ function autoContentType (req, file, cb) {
   });
 }
 
-function getOption(opts, path, defaults, required = false) {
+function getOption (opts, path, defaults, required = false) {
   const type = typeof opts[path];
   if (defaults[type]) {
     return defaults[type];

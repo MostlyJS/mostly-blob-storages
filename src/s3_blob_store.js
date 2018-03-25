@@ -84,7 +84,7 @@ class S3BlobStore {
 
   exists (opts, done) {
     if (typeof opts === 'string') opts = { key: opts };
-    this.s3.headObject({ Bucket: this.bucket, Key: opts.key }, function(err, res){
+    this.s3.headObject({ Bucket: this.bucket, Key: opts.key }, function (err, res){
       if (err && err.statusCode === 404) return done(null, false);
       done(err, !err);
     });
