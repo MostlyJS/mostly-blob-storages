@@ -2,21 +2,21 @@ import crypto from 'crypto';
 import stream from 'stream';
 import fileType from 'file-type';
 
-function staticValue (value) {
+export function staticValue (value) {
   return function (req, file, cb) {
     cb(null, value);
   };
 }
 
-function defaultKey (req, file, cb) {
+export function defaultKey (req, file, cb) {
   crypto.pseudoRandomBytes(16, function (err, raw) {
     cb(err, err ? undefined : raw.toString('hex'));
   });
 }
 
-const defaultContentType = staticValue('application/octet-stream');
+export const defaultContentType = staticValue('application/octet-stream');
 
-function autoContentType (req, file, cb) {
+export function autoContentType (req, file, cb) {
   file.stream.once('data', function (firstChunk) {
     var type = fileType(firstChunk);
     var mime = (type === null ? 'application/octet-stream' : type.mime);
@@ -29,7 +29,7 @@ function autoContentType (req, file, cb) {
   });
 }
 
-function getOption (opts, path, defaults, required = false) {
+export function getOption (opts, path, defaults, required = false) {
   const type = typeof opts[path];
   if (defaults[type]) {
     return defaults[type];
@@ -40,11 +40,3 @@ function getOption (opts, path, defaults, required = false) {
     throw new TypeError(`Expected opts.${path} to be ` + Object.keys(defaults).join(' or '));
   }
 }
-
-export default {
-  autoContentType,
-  defaultContentType,
-  defaultKey,
-  getOption,
-  staticValue,
-};
