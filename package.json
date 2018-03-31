@@ -39,6 +39,7 @@
     "s3-stream-upload": "^2.0.2"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.2",
     "eslint-if-supported": "^1.0.1",
     "eslint-plugin-promise": "^3.5.0",
     "gulp": "^3.9.1",
