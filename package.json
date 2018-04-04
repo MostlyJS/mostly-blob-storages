@@ -1,6 +1,6 @@
 {
   "name": "mostly-blob-storages",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Blob storage engines for mostly microservices and api gateway middleware",
   "author": "Forafish",
   "license": "MIT",
