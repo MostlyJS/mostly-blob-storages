@@ -1,6 +1,6 @@
 {
   "name": "mostly-blob-storages",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Blob storage engines for mostly microservices and api gateway middleware",
   "author": "Forafish",
   "license": "MIT",
@@ -15,9 +15,13 @@
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --opts mocha.opts",
     "test": "npm run lint && npm run coverage"
   },
+  "homepage": "https://github.com/MostlyJS/mostly-blob-storages#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MostlyJS/mostly-blob-storages.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MostlyJS/mostly-blob-storages/issues"
   },
   "dependencies": {
     "async": "^2.5.0",
