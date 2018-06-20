@@ -45,7 +45,7 @@ class MinioBlobStore {
     let bufferStream = new stream.PassThrough();
     let buffer = new Buffer(0);
 
-    bufferStream.on('data', (chunk) => {
+    bufferStream.on('data', chunk => {
       buffer = Buffer.concat([buffer, chunk], buffer.length + chunk.length);
     });
 
