@@ -77,7 +77,7 @@ class S3BlobStore {
   }
 
   remove (opts, done) {
-    var key = typeof opts === 'string' ? opts : opts.key;
+    var key = typeof opts === 'string'? opts : opts.key;
     this.s3.deleteObject({ Bucket: this.bucket, Key: key }, done);
     return this;
   }

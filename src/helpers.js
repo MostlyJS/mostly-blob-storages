@@ -10,7 +10,7 @@ export function staticValue (value) {
 
 export function defaultKey (req, file, cb) {
   crypto.pseudoRandomBytes(16, function (err, raw) {
-    cb(err, err ? undefined : raw.toString('hex'));
+    cb(err, err? undefined : raw.toString('hex'));
   });
 }
 
@@ -19,7 +19,7 @@ export const defaultContentType = staticValue('application/octet-stream');
 export function autoContentType (req, file, cb) {
   file.stream.once('data', function (firstChunk) {
     var type = fileType(firstChunk);
-    var mime = (type === null ? 'application/octet-stream' : type.mime);
+    var mime = (type === null? 'application/octet-stream' : type.mime);
     var outStream = new stream.PassThrough();
 
     outStream.write(firstChunk);

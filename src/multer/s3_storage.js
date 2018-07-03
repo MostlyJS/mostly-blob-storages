@@ -21,14 +21,14 @@ var defaultSSEKMS = staticValue(null);
 
 function defaultKey (req, file, cb) {
   crypto.randomBytes(16, function (err, raw) {
-    cb(err, err ? undefined : raw.toString('hex'));
+    cb(err, err? undefined : raw.toString('hex'));
   });
 }
 
 export function autoContentType (req, file, cb) {
   file.stream.once('data', function (firstChunk) {
     var type = fileType(firstChunk);
-    var mime = (type === null ? 'application/octet-stream' : type.mime);
+    var mime = (type === null? 'application/octet-stream' : type.mime);
     var outStream = new stream.PassThrough();
 
     outStream.write(firstChunk);
