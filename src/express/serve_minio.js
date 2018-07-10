@@ -1,6 +1,6 @@
-import parseUrl from 'parseurl';
+const parseUrl = require('parseurl');
 
-export default function (client, opts) {
+module.exports = function (client, opts) {
   opts = opts || {};
   if (!client) throw Error("serve-minio client option required (minio-js client instance)");
   if (!opts.bucket) throw Error("serve-minio bucket option required");
@@ -30,4 +30,4 @@ export default function (client, opts) {
       stream.pipe(res);
     });
   };
-}
+};
