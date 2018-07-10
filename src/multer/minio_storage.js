@@ -1,6 +1,6 @@
-import async from 'async';
-import concat from 'concat-stream';
-import { getOption, defaultKey, defaultContentType, staticValue } from '../helpers';
+const async = require('async');
+const concat = require('concat-stream');
+const { getOption, defaultKey, defaultContentType, staticValue } = require('../helpers');
 
 function collect (storage, req, file, cb) {
   async.parallel([
@@ -78,6 +78,7 @@ class MinioStorage {
   }
 }
 
-export default function (opts) {
+module.exports = function (opts) {
   return new MinioStorage(opts);
-}
+};
+module.exports.MinioStorage = MinioStorage;

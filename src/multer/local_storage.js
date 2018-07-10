@@ -1,11 +1,11 @@
-import async from 'async';
-import concat from 'concat-stream';
-import fs from 'fs';
-import mkdirp from 'mkdirp';
-import os from 'os';
-import path from 'path';
-import url from 'url';
-import { getOption, defaultKey, defaultContentType, staticValue } from '../helpers';
+const async = require('async');
+const concat = require('concat-stream');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const os = require('os');
+const path = require('path');
+const url = require('url');
+const { getOption, defaultKey, defaultContentType, staticValue } = require('../helpers');
 
 function collect (storage, req, file, cb) {
   async.parallel([
@@ -90,6 +90,7 @@ class LocalStorage {
   }
 }
 
-export default function (opts) {
+module.exports = function (opts) {
   return new LocalStorage(opts);
-}
+};
+module.exports.LocalStorage = LocalStorage;

@@ -1,7 +1,7 @@
-import crypto from 'crypto';
-import stream from 'stream';
-import fileType from 'file-type';
-import parallel from 'run-parallel';
+const crypto = require('crypto');
+const stream = require('stream');
+const fileType = require('file-type');
+const parallel = require('run-parallel');
 
 function staticValue (value) {
   return function (req, file, cb) {
@@ -22,19 +22,6 @@ var defaultSSEKMS = staticValue(null);
 function defaultKey (req, file, cb) {
   crypto.randomBytes(16, function (err, raw) {
     cb(err, err? undefined : raw.toString('hex'));
-  });
-}
-
-export function autoContentType (req, file, cb) {
-  file.stream.once('data', function (firstChunk) {
-    var type = fileType(firstChunk);
-    var mime = (type === null? 'application/octet-stream' : type.mime);
-    var outStream = new stream.PassThrough();
-
-    outStream.write(firstChunk);
-    file.stream.pipe(outStream);
-
-    cb(null, mime, outStream);
   });
 }
 
@@ -72,7 +59,7 @@ function collect (storage, req, file, cb) {
   });
 }
 
-export class S3Storage {
+class S3Storage {
   constructor (opts) {
     switch (typeof opts.s3) {
       case 'object': this.s3 = opts.s3; break;
@@ -201,6 +188,7 @@ export class S3Storage {
   }
 }
 
-export default function (opts) {
+module.exports = function (opts) {
   return new S3Storage(opts);
-}
+};
+module.exports.S3Storage = S3Storage;
