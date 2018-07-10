@@ -1,10 +1,10 @@
-import assert from 'assert';
-import endOf from 'end-of-stream';
-import duplexify from 'duplexify';
-import fs from 'fs';
-import LRU from 'lru-cache';
-import mkdirp from 'mkdirp';
-import path from 'path';
+const assert = require('assert');
+const endOf = require('end-of-stream');
+const duplexify = require('duplexify');
+const fs = require('fs');
+const LRU = require('lru-cache');
+const mkdirp = require('mkdirp');
+const path = require('path');
 
 var listen = function (stream, opts, cb) {
   if (!cb) return stream;
@@ -81,6 +81,6 @@ class LocalBlobStore {
   }
 }
 
-export default function (opts) {
+module.exports = function (opts) {
   return new LocalBlobStore(opts);
-}
+};

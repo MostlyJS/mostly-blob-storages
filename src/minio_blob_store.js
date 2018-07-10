@@ -1,8 +1,5 @@
-import assert from 'assert';
-import makeDebug from 'debug';
-import stream from 'stream';
-
-const debug = makeDebug('mostly:blob-storages:s3-blob-store');
+const assert = require('assert');
+const stream = require('stream');
 
 class MinioBlobStore {
   constructor (opts) {
@@ -78,6 +75,6 @@ class MinioBlobStore {
   }
 }
 
-export default function (opts) {
+module.exports = function (opts) {
   return new MinioBlobStore(opts);
-}
+};

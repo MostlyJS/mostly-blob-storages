@@ -1,7 +1,7 @@
-import downloader from 's3-download-stream';
-import makeDebug from 'debug';
-import mime from 'mime-types';
-import uploadStream from 's3-stream-upload';
+const downloader = require('s3-download-stream');
+const makeDebug = require('debug');
+const mime = require('mime-types');
+const uploadStream = require('s3-stream-upload');
 
 const debug = makeDebug('mostly:blob-storages:s3-blob-store');
 
@@ -91,6 +91,6 @@ class S3BlobStore {
   }
 }
 
-export default function (opts) {
+module.exports = function (opts) {
   return new S3BlobStore(opts);
-}
+};
