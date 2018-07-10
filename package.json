@@ -29,7 +29,6 @@
     "debug": "^2.6.6",
     "duplexify": "^3.5.1",
     "end-of-stream": "^1.4.0",
-    "esm": "^3.0.63",
     "file-type": "^5.2.0",
     "lodash": "^4.17.4",
     "lru-cache": "^4.1.1",
