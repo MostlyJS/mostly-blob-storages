@@ -8,7 +8,7 @@ class MinioBlobStore {
 
     if (!opts.client) throw Error("MinioBlobStore client option required (minio-js client instance)");
     if (!opts.bucket) throw Error("MinioBlobStore bucket option required");
-    
+
     this.client = opts.client;
     this.bucket = opts.bucket;
   }
@@ -35,7 +35,7 @@ class MinioBlobStore {
   createWriteStream (opts, cb) {
     let bucket = opts.bucket || this.bucket;
     cb = cb || function () {};
-    
+
     assert(opts.key, 'opts.key is not provided');
     assert(opts.bucket, 'opts.bucket is not provided');
 

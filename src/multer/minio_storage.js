@@ -41,7 +41,7 @@ class MinioStorage {
       'function': opts.bucket,
       'string': staticValue(opts.bucket),
     }, true);
-    
+
     this.getKey = getOption(opts, 'key', {
       'function': opts.key,
       'undefined': defaultKey,
