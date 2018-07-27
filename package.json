@@ -2,7 +2,11 @@
   "name": "mostly-blob-storages",
   "version": "1.1.1",
   "description": "Blob storage engines for mostly microservices and api gateway middleware",
-  "author": "Forafish",
+  "author": {
+    "name": "mostly",
+    "email": "hello@playingio.com",
+    "url": "https://mostlyjs.github.com"
+  },
   "license": "MIT",
   "main": "index.js",
   "scripts": {
