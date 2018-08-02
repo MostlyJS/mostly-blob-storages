@@ -30,7 +30,7 @@ Please see the [documentation site](https://mostlyjs.github.io).
 ## Installation
 
 ```bash
-npm install mostly-blob-storages
+npm install mostly-blob-storages --save
 ```
 
 # License
