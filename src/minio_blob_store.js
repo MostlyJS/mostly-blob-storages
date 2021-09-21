@@ -37,7 +37,7 @@ class MinioBlobStore {
     cb = cb || function () {};
 
     assert(opts.key, 'opts.key is not provided');
-    assert(opts.bucket, 'opts.bucket is not provided');
+    assert(bucket, 'opts.bucket is not provided');
 
     let bufferStream = new stream.PassThrough();
     let buffer = new Buffer(0);
