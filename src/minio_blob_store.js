@@ -21,9 +21,10 @@ class MinioBlobStore {
     let bucket = opts.bucket || this.bucket;
 
     assert(opts.key, 'opts.key is not provided');
-    assert(opts.bucket, 'opts.bucket is not provided');
+    assert(bucket, 'opts.bucket is not provided');
 
     let passThrough = new stream.PassThrough();
+
     this.client.getObject(bucket, opts.key, (err, dataStream) => {
       if (err) return passThrough.emit('error', err);
       dataStream.pipe(passThrough);
@@ -60,18 +61,24 @@ class MinioBlobStore {
 
 
   exists (opts, cb) {
-    assert(opts.key, 'opts.key is not provided');
+    let bucket = opts.bucket || this.bucket;
 
-    this.client.statObject(this.bucket, opts.key, (err, stat) => {
+    assert(opts.key, 'opts.key is not provided');
+    assert(bucket, 'opts.bucket is not provided');
+
+    this.client.statObject(bucket, opts.key, (err, stat) => {
       if (err) return cb(null, false);
       cb(err, !err);
     });
   }
 
   remove (opts, cb) {
-    assert(opts.key, 'opts.key is not provided');
+    let bucket = opts.bucket || this.bucket;
 
-    this.client.removeObject(this.bucket, opts.key, cb);
+    assert(opts.key, 'opts.key is not provided');
+    assert(bucket, 'opts.bucket is not provided');
+
+    this.client.removeObject(bucket, opts.key, cb);
   }
 }
 
